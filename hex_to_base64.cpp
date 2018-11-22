@@ -23,7 +23,33 @@ char base64Char(int num) {
   return num - 52 + '0';
 }
 
-std::string toBase64(char *binaryByteArray, int size) {
+char hexToChar(char hex) {
+  if(hex >= 'a') {
+    return hex - 'a' + 10;
+  }
+  return hex - '0';
+}
+
+/*
+ * if numInHex has odd number of digits, last digit is ignored
+ * return byte array in big endian format
+ */
+char *hexToBinByteArray(const std::string numInHex, int &sizeOfOutput); 
+
+std::string toBase64(const char * const binaryByteArray, int size);
+
+int main() {
+  std::string numInHex;
+  std::cin >> numInHex;
+  int binByteArraySize;
+  char *byteArray = hexToBinByteArray(numInHex, binByteArraySize);
+  std::string inBase64 = toBase64(byteArray, binByteArraySize);
+  std::cout << inBase64 << '\n';
+  delete [] byteArray;
+  return 0;
+}
+
+std::string toBase64(const char * const binaryByteArray, int size) {
   std::string answer;
   int carryOver = 0;
   int bitsFromNext = 0;
@@ -34,8 +60,8 @@ std::string toBase64(char *binaryByteArray, int size) {
         if(carryOver != 0) {
           answer += base64Char(carryOver);
         }
-        current = binaryByteArray[i] / 4;
-        carryOver = binaryByteArray[i] & 3;
+        current = binaryByteArray[i] / 4; // 2 right shifts to get first/top 6 digits
+        carryOver = binaryByteArray[i] & 3; // get last 2 digits 
         bitsFromNext = 4;
         break;
       case 2:
@@ -52,11 +78,11 @@ std::string toBase64(char *binaryByteArray, int size) {
     answer += base64Char(current);
   }
 
-  if(size*8%6 == 2) { // equiv to case 4 above
-    answer += base64Char(carryOver*16);
+  if(size * 8 % 6 == 2) { // equiv to case 4 above
+    answer += base64Char(carryOver * 16);
     answer += "==";
-  } else if(size*8%6 == 4) { // equiv to case 2 above
-    answer += base64Char(carryOver*4);
+  } else if(size * 8 % 6 == 4) { // equiv to case 2 above
+    answer += base64Char(carryOver * 4);
     answer += "=";
   } else {
     answer += base64Char(carryOver);
@@ -64,32 +90,14 @@ std::string toBase64(char *binaryByteArray, int size) {
   return answer;
 }
 
-char hexToChar(char hex) {
-  if(hex >= 'a') {
-    return hex - 'a' + 10;
-  }
-  return hex - '0';
-}
-
-
-// bigendian
-char *hexToBinByteArray(std::string numInHex, int &sizeOfOutput) {
+char *hexToBinByteArray(const std::string numInHex, int &sizeOfOutput) {
   int inputSize = numInHex.size();
   int numOfBits = inputSize * 4;
   int numOfBytes = numOfBits / 8;
   sizeOfOutput = numOfBytes;
   char *output = new char[numOfBytes];
   for(int i = 0; i < numOfBytes; ++i) {
-    output[i] = hexToChar(numInHex[2*i])*16 + hexToChar(numInHex[2*i+1]);
+    output[i] = hexToChar(numInHex[2*i]) * 16 + hexToChar(numInHex[2*i + 1]);
   }
   return output;
-}
-
-int main() {
-  std::string numInHex;
-  std::cin >> numInHex;
-  int binByteArraySize;
-  std::string inBase64 = toBase64(hexToBinByteArray(numInHex, binByteArraySize), binByteArraySize); // memory leak
-  std::cout << inBase64 << '\n';
-  return 0;
 }
