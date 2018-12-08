@@ -1,11 +1,39 @@
-/*  take lower 4 bits of each char in the string
- *  and create a byte/bit array
- *  6 bits make up a digit in base64 
- **/
+//
+//  byteUtil.cpp
+//  set1
+//
+//  Created by prudhvi on 08/12/18.
+//  Copyright © 2018 crypto. All rights reserved.
+//
 
-
-#include <iostream>
 #include <string>
+
+#include "byteUtil.h"
+
+
+char *exor(const char * const buf1, const char * const buf2, int size) {
+  char *exor = new char[size];
+  for(int i = 0; i < size; ++i) {
+    exor[i] = buf1[i] ^ buf2[i];
+  }
+  return exor;
+}
+
+char numToHex(int num) {
+  if(num >= 10) {
+    return 'a' + num - 10;
+  }
+  return '0' + num;
+}
+
+std::string byteArrayToHex(const char * const byteArray, int arrSize) {
+  std::string output;
+  for(int i = 0; i < arrSize; ++i) {
+    output = output + numToHex(byteArray[i] / 16) + numToHex(byteArray[i] % 16);
+  }
+  return output;
+}
+
 
 char base64Char(int num) {
   if(num == 62) {
@@ -30,30 +58,23 @@ char hexToChar(char hex) {
   return hex - '0';
 }
 
-/*
- * if numInHex has odd number of digits, last digit is ignored
- * return byte array in big endian format
- */
-char *hexToBinByteArray(const std::string numInHex, int &sizeOfOutput); 
-
-std::string toBase64(const char * const binaryByteArray, int size);
-
-int main() {
-  std::string numInHex;
-  std::cin >> numInHex;
-  int binByteArraySize;
-  char *byteArray = hexToBinByteArray(numInHex, binByteArraySize);
-  std::string inBase64 = toBase64(byteArray, binByteArraySize);
-  std::cout << inBase64 << '\n';
-  delete [] byteArray;
-  return 0;
+char *hexToBinByteArray(const std::string numInHex, int &sizeOfOutput) {
+  int inputSize = numInHex.size();
+  int numOfBits = inputSize * 4;
+  int numOfBytes = numOfBits / 8;
+  sizeOfOutput = numOfBytes;
+  char *output = new char[numOfBytes];
+  for(int i = 0; i < numOfBytes; ++i) {
+    output[i] = hexToChar(numInHex[2*i]) * 16 + hexToChar(numInHex[2*i + 1]);
+  }
+  return output;
 }
 
 std::string toBase64(const char * const binaryByteArray, int size) {
   std::string answer;
   int carryOver = 0;
   int bitsFromNext = 0;
-  int current;
+  int current = 0;
   for(int i = 0; i < size; ++i) {
     switch(bitsFromNext) {
       case 0:
@@ -61,7 +82,7 @@ std::string toBase64(const char * const binaryByteArray, int size) {
           answer += base64Char(carryOver);
         }
         current = binaryByteArray[i] / 4; // 2 right shifts to get first/top 6 digits
-        carryOver = binaryByteArray[i] & 3; // get last 2 digits 
+        carryOver = binaryByteArray[i] & 3; // get last 2 digits
         bitsFromNext = 4;
         break;
       case 2:
@@ -77,7 +98,7 @@ std::string toBase64(const char * const binaryByteArray, int size) {
     }
     answer += base64Char(current);
   }
-
+  
   if(size * 8 % 6 == 2) { // equiv to case 4 above
     answer += base64Char(carryOver * 16);
     answer += "==";
@@ -88,16 +109,4 @@ std::string toBase64(const char * const binaryByteArray, int size) {
     answer += base64Char(carryOver);
   }
   return answer;
-}
-
-char *hexToBinByteArray(const std::string numInHex, int &sizeOfOutput) {
-  int inputSize = numInHex.size();
-  int numOfBits = inputSize * 4;
-  int numOfBytes = numOfBits / 8;
-  sizeOfOutput = numOfBytes;
-  char *output = new char[numOfBytes];
-  for(int i = 0; i < numOfBytes; ++i) {
-    output[i] = hexToChar(numInHex[2*i]) * 16 + hexToChar(numInHex[2*i + 1]);
-  }
-  return output;
 }
