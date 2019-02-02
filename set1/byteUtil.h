@@ -23,6 +23,7 @@ char *exor(const char * const buf1, const char * const buf2, int size);
 
 std::string byteArrayToHex(const char * const byteArray, int arrSize);
 
+int hammingdistance(std::string str1, std::string str2);
 
 
 #endif /* byteUtil_h */

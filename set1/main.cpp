@@ -7,6 +7,11 @@
 
 int main() {
   
+  // challenge 6 : Break repeating-key XOR
+  std::cout << hammingdistance("this is a test", "wokka wokka!!!") << '\n';
+//  std::
+  
+  /*
   // challenge 5: Implement repeating-key XOR
   std::string textToEncrypt;
   std::string fileName;
@@ -25,6 +30,7 @@ int main() {
   
   std::string secret = xorEncrypt(textToEncrypt, key);
   std::cout << byteArrayToHex(secret.data(), secret.size()) << '\n';
+  */
   
   /*
   // challenge 4: Single-byte XOR cipher

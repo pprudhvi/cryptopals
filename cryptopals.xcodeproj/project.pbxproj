@@ -37,7 +37,6 @@
 		A45AD07821BC108B00770FBB /* cryptopals */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cryptopals; sourceTree = BUILT_PRODUCTS_DIR; };
 		A45AD08621BC10C500770FBB /* set1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = set1; sourceTree = BUILT_PRODUCTS_DIR; };
 		A45AD08D21BC10E400770FBB /* 5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5.txt; sourceTree = "<group>"; };
-		A45AD08F21BC10E400770FBB /* break_repeating_key_xor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = break_repeating_key_xor.cpp; sourceTree = "<group>"; };
 		A45AD09021BC10E400770FBB /* 51.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 51.txt; sourceTree = "<group>"; };
 		A45AD09421BC10E400770FBB /* 4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 4.txt; sourceTree = "<group>"; };
 		A45AD09621BC10E400770FBB /* sensible_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sensible_text.cpp; sourceTree = "<group>"; };
@@ -89,7 +88,6 @@
 				A45AD09421BC10E400770FBB /* 4.txt */,
 				A45AD08D21BC10E400770FBB /* 5.txt */,
 				A45AD09021BC10E400770FBB /* 51.txt */,
-				A45AD08F21BC10E400770FBB /* break_repeating_key_xor.cpp */,
 				A45AD09621BC10E400770FBB /* sensible_text.cpp */,
 				A45AD09E21BC13B600770FBB /* byteUtil.h */,
 				A45AD0A321BC264A00770FBB /* xorCipher.cpp */,
